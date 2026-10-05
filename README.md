@@ -1,14 +1,56 @@
-# Welcome to your Lovable project
+# CharmCart Shop
+
+Create a modern single-page e-commerce website.
+
+Requirements:
+
+- Responsive design
+
+- Hero section with banner
+
+- Product listing section
+
+- Shopping cart
+
+- Product search
+
+- Category filter
+
+- Add to cart button
+
+- Product details popup
+
+- Contact section
+
+- Footer
+
+Inventory Management Panel:
+
+- Add product
+
+- Edit product
+
+- Delete product
+
+- Product stock quantity
+
+- Product price management
+
+- Inventory table dashboard
+
+Use React, Tailwind CSS and modern UI.
+
+Use dummy products and inventory data.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/1bb7df4c-da0f-4d4e-b58a-15f5d3d49850).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +62,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
