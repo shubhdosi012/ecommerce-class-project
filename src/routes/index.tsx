@@ -389,7 +389,7 @@ function ProductForm({ initial, onSave, onCancel }: { initial: Product | null; o
       id: initial?.id ?? `p${Date.now()}`,
       image: initial?.image ?? FALLBACK_IMAGE,
       name: f.name.trim().slice(0, 60),
-      category: f.category,
+      category: f.category ?? "Outerwear",
       price,
       stock,
       tagline: f.tagline.trim().slice(0, 60),
