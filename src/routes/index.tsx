@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import hero from "@/assets/hero.jpg";
 import { CATEGORIES, FALLBACK_IMAGE, initialProducts, type Product } from "@/lib/products";
 
@@ -42,6 +42,22 @@ function Index() {
   const [detail, setDetail] = useState<Product | null>(null);
   const [editing, setEditing] = useState<Product | "new" | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    try {
+      const p = localStorage.getItem("velo-products");
+      const c = localStorage.getItem("velo-cart");
+      if (p) setProducts(JSON.parse(p));
+      if (c) setCart(JSON.parse(c));
+    } catch {}
+    setLoaded(true);
+  }, []);
+  useEffect(() => {
+    if (!loaded) return;
+    localStorage.setItem("velo-products", JSON.stringify(products));
+    localStorage.setItem("velo-cart", JSON.stringify(cart));
+  }, [products, cart, loaded]);
 
   const flash = (m: string) => {
     setToast(m);
