@@ -1,64 +1,96 @@
-# CharmCart Shop
+# E-Commerce Inventory Management System
 
-Create a modern single-page e-commerce website.
+A responsive e-commerce storefront and inventory-management dashboard created as a college AI-class project using **Lovable** and a modern React-based frontend workflow.
 
-Requirements:
+**Live demo:** https://ecommerce-inventory-management-six.vercel.app/  
+**Source code:** https://github.com/shubhdosi012/ecommerce-inventory-management
 
-- Responsive design
+> **Project status:** Student project / demonstration. The current project brief uses sample product and inventory data. Do not assume production payments, authentication, or a connected backend unless those are added and tested.
 
-- Hero section with banner
+## Project overview
 
-- Product listing section
+The project explores two connected experiences:
 
-- Shopping cart
+1. **Customer storefront** — browse products and explore a shopping-style interface.
+2. **Inventory management panel** — view and manage product records in a dashboard-style interface.
 
+The goal is to practise turning a product idea into a clear, responsive web experience and to learn how frontend components, state, layouts, and data views fit together.
+
+## Key features
+
+### Storefront
+- Responsive single-page shopping experience
+- Product listing with sample product data
 - Product search
-
-- Category filter
-
-- Add to cart button
-
+- Category filtering
+- Add-to-cart interactions
 - Product details popup
+- Contact section and footer
 
-- Contact section
+### Inventory dashboard
+- Product inventory table
+- Add product records
+- Edit product details
+- Delete product records
+- Track displayed stock quantities
+- Manage displayed product prices
 
-- Footer
+**Data note:** The repository brief describes dummy/sample product and inventory data. Verify persistence behaviour before presenting this as a database-backed inventory system.
 
-Inventory Management Panel:
+## Technology stack
 
-- Add product
+- **Lovable** — AI-assisted project generation and iteration
+- **React** — component-based user interface
+- **TypeScript** — typed JavaScript
+- **Vite / TanStack tooling** — development and build workflow
+- **Tailwind CSS** — styling utilities
+- **Lucide React** — icons
 
-- Edit product
+The exact dependencies and scripts are maintained in [package.json](package.json).
 
-- Delete product
+## Run locally
 
-- Product stock quantity
+Prerequisites: Node.js and npm.
 
-- Product price management
-
-- Inventory table dashboard
-
-Use React, Tailwind CSS and modern UI.
-
-Use dummy products and inventory data.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/1bb7df4c-da0f-4d4e-b58a-15f5d3d49850).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
+git clone https://github.com/shubhdosi012/ecommerce-inventory-management.git
+cd ecommerce-inventory-management
+npm install
 npm run dev
 ```
+
+Open the local URL printed by the development server.
+
+## Useful commands
+
+```bash
+npm run dev       # Start the development server
+npm run build     # Create a production build
+npm run preview   # Preview the production build
+npm run lint      # Run ESLint
+npm test          # Run the test script
+```
+
+## Project learning outcomes
+
+- Translating requirements into a working UI
+- Building reusable React components
+- Organising a frontend project
+- Designing a responsive storefront and dashboard
+- Implementing search, filtering and cart interactions
+- Using GitHub for version control and Vercel for deployment
+- Reviewing the difference between a frontend demo and a production-ready system
+
+## Future improvements
+
+- Connect products and stock to a persistent database
+- Add secure authentication and role-based admin access
+- Validate inventory changes and prevent negative stock
+- Add order management and stock updates after checkout
+- Add accessibility checks and automated UI tests
+- Add screenshots and a short demo video
+- Document any backend, API, or payment integration only after it is implemented and tested
+
+## Academic project note
+
+Built for learning and demonstration as part of college coursework. This README documents the intended features and known stack; it does not claim unverified production functionality.
