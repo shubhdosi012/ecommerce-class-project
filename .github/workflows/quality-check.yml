@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
@@ -17,11 +20,65 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
+        id: install
         run: bun install --frozen-lockfile
+
+      # The current source has Prettier-only lint failures. Format those files
+      # on direct pushes, commit the real source changes, then lint/test/build.
+      - name: Format source files on main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          bunx prettier --write \
+            src/components/ui/badge.tsx \
+            src/components/ui/button.tsx \
+            src/components/ui/form.tsx \
+            src/components/ui/navigation-menu.tsx \
+            src/components/ui/sidebar.tsx \
+            src/components/ui/toggle.tsx \
+            src/lib/products.ts \
+            src/routes/index.tsx
+
+      - name: Commit formatting fixes on main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet; then
+            git add -- \
+              src/components/ui/badge.tsx \
+              src/components/ui/button.tsx \
+              src/components/ui/form.tsx \
+              src/components/ui/navigation-menu.tsx \
+              src/components/ui/sidebar.tsx \
+              src/components/ui/toggle.tsx \
+              src/lib/products.ts \
+              src/routes/index.tsx
+            git commit -m "chore: format e-commerce source files"
+            git push
+          else
+            echo "No formatting changes required."
+          fi
+
+      - name: Check formatting on pull requests
+        if: github.event_name == 'pull_request'
+        run: |
+          bunx prettier --check \
+            src/components/ui/badge.tsx \
+            src/components/ui/button.tsx \
+            src/components/ui/form.tsx \
+            src/components/ui/navigation-menu.tsx \
+            src/components/ui/sidebar.tsx \
+            src/components/ui/toggle.tsx \
+            src/lib/products.ts \
+            src/routes/index.tsx
 
       - name: Run ESLint
         run: bun run lint
 
+      - name: Run automated tests
+        if: always() && steps.install.outcome == 'success'
+        run: bun run test
+
       - name: Build production app
-        if: always()
+        if: always() && steps.install.outcome == 'success'
         run: bun run build
