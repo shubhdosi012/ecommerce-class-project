@@ -7,6 +7,12 @@ A responsive e-commerce storefront and inventory-management dashboard created as
 
 > **Project status:** Student project / demonstration. The current project brief uses sample product and inventory data. Do not assume production payments, authentication, or a connected backend unless those are added and tested.
 
+## Project preview
+
+![Storefront hero artwork](src/assets/hero.jpg)
+
+*This is the hero image asset used by the storefront, not a screenshot of the full application.*
+
 ## Project overview
 
 The project explores two connected experiences:
