@@ -36,7 +36,9 @@ jobs:
             src/components/ui/sidebar.tsx \
             src/components/ui/toggle.tsx \
             src/lib/products.ts \
-            src/routes/index.tsx
+            src/lib/storefront.ts \
+            src/routes/index.tsx \
+            src/test/storefront.test.ts
 
       - name: Commit formatting fixes on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -52,7 +54,9 @@ jobs:
               src/components/ui/sidebar.tsx \
               src/components/ui/toggle.tsx \
               src/lib/products.ts \
-              src/routes/index.tsx
+              src/lib/storefront.ts \
+              src/routes/index.tsx \
+              src/test/storefront.test.ts
             git commit -m "chore: format e-commerce source files"
             git push
           else
