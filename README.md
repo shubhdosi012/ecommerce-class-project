@@ -12,7 +12,7 @@ The project brings together two frontend experiences:
 1. **Storefront:** browse sample products and explore shopping interactions.
 2. **Inventory panel:** view and manage product records in a dashboard-style interface.
 
-This is a student demonstration project. The current repository uses sample product data; do not assume secure authentication, payment processing, or persistent database storage unless separately implemented and tested.
+This is a student demonstration project. Product and cart changes are saved in the current browser's localStorage on that device; they are not shared with a server or another browser. The project does not include real authentication, payment processing, server-side orders, or a persistent database. The contact form is a UI demo and does not send messages.
 
 ## Features
 
@@ -21,7 +21,7 @@ This is a student demonstration project. The current repository uses sample prod
 - Product search and category filtering
 - Product detail dialog
 - Add-to-cart interactions
-- Product and contact sections
+- Product sections and a clearly labelled demo contact form
 
 ### Inventory interface
 - Product table
@@ -70,11 +70,10 @@ bun run preview   # Preview the production build
 
 ## Next improvements
 
-- Resolve lint warnings and errors
-- Confirm the production build and tests pass
+- Keep lint, automated tests, and the production build passing in GitHub Actions
 - Add real screenshots of the running application
-- Add persistent storage and secure authentication if required
-- Validate stock and price inputs
+- Add a backend only if secure authentication, payments, orders, or shared inventory are needed
+- Continue testing stock and price boundaries
 - Add accessibility and responsive-layout checks
 
 ## Academic context
