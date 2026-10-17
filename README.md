@@ -1,102 +1,82 @@
-# E-Commerce Inventory Management System
+# E-Commerce Inventory Management
 
-A responsive e-commerce storefront and inventory-management dashboard created as a college AI-class project using **Lovable** and a modern React-based frontend workflow.
+A college AI-class project built with **Lovable** to explore an e-commerce storefront and an inventory-management interface.
 
-**Live demo:** https://ecommerce-inventory-management-six.vercel.app/  
-**Source code:** https://github.com/shubhdosi012/ecommerce-inventory-management
-
-> **Project status:** Student project / demonstration. The current project brief uses sample product and inventory data. Do not assume production payments, authentication, or a connected backend unless those are added and tested.
-
-## Project preview
-
-![Storefront hero artwork](src/assets/hero.jpg)
-
-*This is the hero image asset used by the storefront, not a screenshot of the full application.*
+- **Live demo:** https://ecommerce-inventory-management-six.vercel.app/
+- **Source code:** https://github.com/shubhdosi012/ecommerce-inventory-management
 
 ## Project overview
 
-The project explores two connected experiences:
+The project brings together two frontend experiences:
 
-1. **Customer storefront** — browse products and explore a shopping-style interface.
-2. **Inventory management panel** — view and manage product records in a dashboard-style interface.
+1. **Storefront:** browse sample products and explore shopping interactions.
+2. **Inventory panel:** view and manage product records in a dashboard-style interface.
 
-The goal is to practise turning a product idea into a clear, responsive web experience and to learn how frontend components, state, layouts, and data views fit together.
+This is a student demonstration project. The current repository uses sample product data; do not assume secure authentication, payment processing, or persistent database storage unless separately implemented and tested.
 
-## Key features
+## Features
 
 ### Storefront
-- Responsive single-page shopping experience
-- Product listing with sample product data
-- Product search
-- Category filtering
+- Responsive product listing
+- Product search and category filtering
+- Product detail dialog
 - Add-to-cart interactions
-- Product details popup
-- Contact section and footer
+- Product and contact sections
 
-### Inventory dashboard
-- Product inventory table
-- Add product records
-- Edit product details
-- Delete product records
-- Track displayed stock quantities
-- Manage displayed product prices
+### Inventory interface
+- Product table
+- Add, edit, and remove product records
+- Display prices and stock quantities
 
-**Data note:** The repository brief describes dummy/sample product and inventory data. Verify persistence behaviour before presenting this as a database-backed inventory system.
+## Technology
 
-## Technology stack
+- **Lovable:** AI-assisted generation and iteration
+- **React and TypeScript:** user interface
+- **Vite / TanStack:** development and build tooling
+- **Tailwind CSS:** styling
+- **Lucide React:** icons
 
-- **Lovable** — AI-assisted project generation and iteration
-- **React** — component-based user interface
-- **TypeScript** — typed JavaScript
-- **Vite / TanStack tooling** — development and build workflow
-- **Tailwind CSS** — styling utilities
-- **Lucide React** — icons
-
-The exact dependencies and scripts are maintained in [package.json](package.json).
+See [package.json](package.json) for the current dependencies and scripts.
 
 ## Run locally
 
-Prerequisites: Node.js and npm.
+Prerequisites: Node.js and Bun (the repository includes `bun.lock`).
 
 ```bash
 git clone https://github.com/shubhdosi012/ecommerce-inventory-management.git
 cd ecommerce-inventory-management
-npm install
-npm run dev
+bun install
+bun run dev
 ```
-
-Open the local URL printed by the development server.
 
 ## Useful commands
 
 ```bash
-npm run dev       # Start the development server
-npm run build     # Create a production build
-npm run preview   # Preview the production build
-npm run lint      # Run ESLint
-npm test          # Run the test script
+bun run dev       # Start the development server
+bun run lint      # Check code style and common issues
+bun run test      # Run automated tests
+bun run build     # Build the production bundle
+bun run preview   # Preview the production build
 ```
 
-## Project learning outcomes
+## Learning outcomes
 
-- Translating requirements into a working UI
-- Building reusable React components
-- Organising a frontend project
-- Designing a responsive storefront and dashboard
-- Implementing search, filtering and cart interactions
-- Using GitHub for version control and Vercel for deployment
-- Reviewing the difference between a frontend demo and a production-ready system
+- Turning requirements into a user interface
+- Working with reusable React components
+- Building search, filtering, and cart interactions
+- Organising a frontend codebase
+- Using GitHub and Vercel during project development
+- Understanding the difference between a frontend prototype and a production application
 
-## Future improvements
+## Next improvements
 
-- Connect products and stock to a persistent database
-- Add secure authentication and role-based admin access
-- Validate inventory changes and prevent negative stock
-- Add order management and stock updates after checkout
-- Add accessibility checks and automated UI tests
-- Add screenshots and a short demo video
-- Document any backend, API, or payment integration only after it is implemented and tested
+- Resolve lint warnings and errors
+- Confirm the production build and tests pass
+- Add real screenshots of the running application
+- Add persistent storage and secure authentication if required
+- Validate stock and price inputs
+- Add accessibility and responsive-layout checks
 
-## Academic project note
+## Academic context
 
-Built for learning and demonstration as part of college coursework. This README documents the intended features and known stack; it does not claim unverified production functionality.
+Built with Lovable for college AI-class learning and demonstration. Features and integrations should be described as production-ready only after they have been verified.
