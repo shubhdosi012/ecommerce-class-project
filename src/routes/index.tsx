@@ -451,17 +451,17 @@ function Index() {
         <span className="text-foreground">
           <Logo />
         </span>
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-foreground">
-            Instagram
+        <nav aria-label="Footer" className="flex gap-6">
+          <a href="#shop" className="hover:text-foreground">
+            Shop
           </a>
-          <a href="#" className="hover:text-foreground">
-            Returns
+          <a href="#inventory" className="hover:text-foreground">
+            Inventory
           </a>
-          <a href="#" className="hover:text-foreground">
-            Privacy
+          <a href="#contact" className="hover:text-foreground">
+            Contact
           </a>
-        </div>
+        </nav>
         <div className="font-mono text-xs">© 2026 VELO — run the city cold</div>
       </footer>
 
@@ -589,12 +589,15 @@ function Index() {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>{money(subtotal)}</span>
               </div>
+              <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+                Demo only: no payment is taken or order sent to a server. Stock changes are saved only in this browser.
+              </p>
               <button
                 disabled={!cartItems.length}
                 onClick={checkout}
                 className={`${btnPrimary} w-full`}
               >
-                Checkout →
+                Demo checkout →
               </button>
             </div>
           </aside>
