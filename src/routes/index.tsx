@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import hero from "@/assets/hero.jpg";
 import { CATEGORIES, FALLBACK_IMAGE, initialProducts, type Product } from "@/lib/products";
+import { isCartArray, isProductArray, normalizeCart, type CartLine } from "@/lib/storefront";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,8 +25,17 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type CartLine = { id: string; qty: number };
-const money = (n: number) => `$${n.toFixed(n % 1 ? 2 : 0)}`;
+function readStoredJson(key: string): unknown {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved === null ? null : (JSON.parse(saved) as unknown);
+  } catch (error) {
+    console.warn(`Could not read saved storefront data for "${key}".`, error);
+    return null;
+  }
+}
+
+const money = (n: number) => `${n.toFixed(n % 1 ? 2 : 0)}`;
 
 const input =
   "w-full px-4 py-3 rounded-xl bg-glass border border-border text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary/60";
@@ -52,20 +62,32 @@ function Index() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    try {
-      const p = localStorage.getItem("velo-products");
-      const c = localStorage.getItem("velo-cart");
-      if (p) setProducts(JSON.parse(p));
-      if (c) setCart(JSON.parse(c));
-    } catch (error) {
-      console.warn("Could not restore saved storefront data; using default data instead.", error);
+    const storedProducts = readStoredJson("velo-products");
+    const restoredProducts = isProductArray(storedProducts) ? storedProducts : null;
+
+    if (restoredProducts) {
+      setProducts(restoredProducts);
+    } else if (storedProducts !== null) {
+      console.warn("Saved product data was invalid; default products will be used.");
     }
+
+    const storedCart = readStoredJson("velo-cart");
+    if (isCartArray(storedCart)) {
+      setCart(normalizeCart(storedCart, restoredProducts ?? initialProducts));
+    } else if (storedCart !== null) {
+      console.warn("Saved cart data was invalid; the cart will start empty.");
+    }
+
     setLoaded(true);
   }, []);
   useEffect(() => {
     if (!loaded) return;
-    localStorage.setItem("velo-products", JSON.stringify(products));
-    localStorage.setItem("velo-cart", JSON.stringify(cart));
+    try {
+      localStorage.setItem("velo-products", JSON.stringify(products));
+      localStorage.setItem("velo-cart", JSON.stringify(cart));
+    } catch (error) {
+      console.warn("Could not save storefront data in this browser.", error);
+    }
   }, [products, cart, loaded]);
 
   const flash = (m: string) => {
@@ -107,18 +129,36 @@ function Index() {
     );
   };
   const checkout = () => {
-    setProducts((ps) =>
-      ps.map((p) => ({ ...p, stock: p.stock - (cart.find((l) => l.id === p.id)?.qty ?? 0) })),
+    const safeCart = normalizeCart(cart, products);
+    const cartUnchanged =
+      safeCart.length === cart.length &&
+      safeCart.every((line) => cart.some((savedLine) => savedLine.id === line.id && savedLine.qty === line.qty));
+
+    if (!cartUnchanged) {
+      setCart(safeCart);
+      flash("Cart refreshed to available stock. Review it before checkout.");
+      return;
+    }
+    if (safeCart.length === 0) return flash("Your cart is empty.");
+
+    const quantities = new Map(safeCart.map((line) => [line.id, line.qty]));
+    setProducts((currentProducts) =>
+      currentProducts.map((product) => ({
+        ...product,
+        stock: Math.max(0, product.stock - (quantities.get(product.id) ?? 0)),
+      })),
     );
     setCart([]);
     setCartOpen(false);
-    flash("Order placed — stock updated");
+    flash("Demo checkout complete — browser-local stock updated.");
   };
 
   const saveProduct = (p: Product) => {
-    setProducts((ps) =>
-      ps.some((x) => x.id === p.id) ? ps.map((x) => (x.id === p.id ? p : x)) : [p, ...ps],
-    );
+    const updatedProducts = products.some((product) => product.id === p.id)
+      ? products.map((product) => (product.id === p.id ? p : product))
+      : [p, ...products];
+    setProducts(updatedProducts);
+    setCart((currentCart) => normalizeCart(currentCart, updatedProducts));
     setEditing(null);
     flash("Product saved");
   };
@@ -403,7 +443,7 @@ function Index() {
         </div>
       </section>
 
-      <ContactSection onSent={() => flash("Message sent — we'll reply within a day")} />
+      <ContactSection onDemoSubmit={() => flash("Demo only — no message was sent.")} />
 
       <footer className="px-6 md:px-12 py-10 border-t border-border flex flex-col md:flex-row justify-between gap-6 text-sm text-muted-foreground">
         <span className="text-foreground">
@@ -619,7 +659,7 @@ function ProductForm({
     const price = Number(f.price),
       stock = Number(f.stock);
     if (!f.name.trim()) return setErr("Name is required");
-    if (!(price > 0)) return setErr("Price must be greater than 0");
+    if (!Number.isFinite(price) || price <= 0) return setErr("Price must be a finite number greater than 0");
     if (!Number.isInteger(stock) || stock < 0) return setErr("Stock must be a whole number ≥ 0");
     onSave({
       id: initial?.id ?? `p${Date.now()}`,
@@ -696,11 +736,11 @@ function ProductForm({
   );
 }
 
-function ContactSection({ onSent }: { onSent: () => void }) {
+function ContactSection({ onDemoSubmit }: { onDemoSubmit: () => void }) {
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.currentTarget.reset();
-    onSent();
+    onDemoSubmit();
   };
   return (
     <section
@@ -710,14 +750,14 @@ function ContactSection({ onSent }: { onSent: () => void }) {
       <div>
         <h2 className="font-display text-4xl uppercase tracking-tight">Talk to the crew</h2>
         <p className="text-foreground/60 mt-3 max-w-[38ch] text-pretty">
-          Sizing, restocks, or bulk team orders — drop a line and we reply within a day.
+          This demo does not connect to a support team or send messages. The form below only demonstrates client-side input and feedback.
         </p>
       </div>
       <form onSubmit={submit} className="space-y-4">
         <input required placeholder="Name" className={input} />
         <input required type="email" placeholder="Email" className={input} />
         <textarea required placeholder="Message" rows={3} className={input} />
-        <button className={btnPrimary}>Send →</button>
+        <button className={btnPrimary}>Preview message →</button>
       </form>
     </section>
   );
