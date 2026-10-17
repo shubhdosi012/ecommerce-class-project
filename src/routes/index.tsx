@@ -132,7 +132,9 @@ function Index() {
     const safeCart = normalizeCart(cart, products);
     const cartUnchanged =
       safeCart.length === cart.length &&
-      safeCart.every((line) => cart.some((savedLine) => savedLine.id === line.id && savedLine.qty === line.qty));
+      safeCart.every((line) =>
+        cart.some((savedLine) => savedLine.id === line.id && savedLine.qty === line.qty),
+      );
 
     if (!cartUnchanged) {
       setCart(safeCart);
@@ -659,7 +661,8 @@ function ProductForm({
     const price = Number(f.price),
       stock = Number(f.stock);
     if (!f.name.trim()) return setErr("Name is required");
-    if (!Number.isFinite(price) || price <= 0) return setErr("Price must be a finite number greater than 0");
+    if (!Number.isFinite(price) || price <= 0)
+      return setErr("Price must be a finite number greater than 0");
     if (!Number.isInteger(stock) || stock < 0) return setErr("Stock must be a whole number ≥ 0");
     onSave({
       id: initial?.id ?? `p${Date.now()}`,
@@ -750,7 +753,8 @@ function ContactSection({ onDemoSubmit }: { onDemoSubmit: () => void }) {
       <div>
         <h2 className="font-display text-4xl uppercase tracking-tight">Talk to the crew</h2>
         <p className="text-foreground/60 mt-3 max-w-[38ch] text-pretty">
-          This demo does not connect to a support team or send messages. The form below only demonstrates client-side input and feedback.
+          This demo does not connect to a support team or send messages. The form below only
+          demonstrates client-side input and feedback.
         </p>
       </div>
       <form onSubmit={submit} className="space-y-4">
