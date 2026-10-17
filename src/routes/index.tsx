@@ -590,7 +590,8 @@ function Index() {
                 <span>{money(subtotal)}</span>
               </div>
               <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
-                Demo only: no payment is taken or order sent to a server. Stock changes are saved only in this browser.
+                Demo only: no payment is taken or order sent to a server. Stock changes are saved
+                only in this browser.
               </p>
               <button
                 disabled={!cartItems.length}
