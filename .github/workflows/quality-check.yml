@@ -74,7 +74,9 @@ jobs:
             src/components/ui/sidebar.tsx \
             src/components/ui/toggle.tsx \
             src/lib/products.ts \
-            src/routes/index.tsx
+            src/lib/storefront.ts \
+            src/routes/index.tsx \
+            src/test/storefront.test.ts
 
       - name: Run ESLint
         run: bun run lint
