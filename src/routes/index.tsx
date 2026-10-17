@@ -57,7 +57,9 @@ function Index() {
       const c = localStorage.getItem("velo-cart");
       if (p) setProducts(JSON.parse(p));
       if (c) setCart(JSON.parse(c));
-    } catch {}
+    } catch (error) {
+      console.warn("Could not restore saved storefront data; using default data instead.", error);
+    }
     setLoaded(true);
   }, []);
   useEffect(() => {
