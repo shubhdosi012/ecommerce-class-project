@@ -3,7 +3,7 @@
 A college AI-class project built with **Lovable** to explore an e-commerce storefront and an inventory-management interface.
 
 - **Live demo:** https://ecommerce-inventory-management-six.vercel.app/
-- **Source code:** https://github.com/shubhdosi012/ecommerce-inventory-management
+- **Source code:** https://github.com/shubhdosi012/ecommerce-class-project
 
 ## Project overview
 
@@ -43,8 +43,8 @@ See [package.json](package.json) for the current dependencies and scripts.
 Prerequisites: Node.js and Bun (the repository includes `bun.lock`).
 
 ```bash
-git clone https://github.com/shubhdosi012/ecommerce-inventory-management.git
-cd ecommerce-inventory-management
+git clone https://github.com/shubhdosi012/ecommerce-class-project.git
+cd ecommerce-class-project
 bun install
 bun run dev
 ```
