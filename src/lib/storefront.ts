@@ -61,7 +61,14 @@ export function normalizeCart(lines: CartLine[], products: Product[]): CartLine[
 
   for (const line of lines) {
     const product = productsById.get(line.id);
-    if (!product || product.stock <= 0 || !Number.isSafeInteger(line.qty) || line.qty <= 0) continue;
+    if (
+      !product ||
+      product.stock <= 0 ||
+      !Number.isSafeInteger(line.qty) ||
+      line.qty <= 0
+    ) {
+      continue;
+    }
 
     const previousQuantity = quantitiesById.get(line.id) ?? 0;
     quantitiesById.set(line.id, Math.min(product.stock, previousQuantity + line.qty));
