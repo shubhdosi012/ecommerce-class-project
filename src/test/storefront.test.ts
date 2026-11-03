@@ -36,7 +36,9 @@ describe("saved storefront data", () => {
     expect(isCartArray([{ id: "product-1", qty: 2 }])).toBe(true);
     expect(isCartArray([{ id: "product-1", qty: 1.5 }])).toBe(false);
     expect(isCartArray([{ id: "product-1", qty: 0 }])).toBe(false);
-    const unsafeQuantity = [{ id: "product-1", qty: Number.MAX_SAFE_INTEGER + 1 }];
+    const unsafeQuantity = [
+      { id: "product-1", qty: Number.MAX_SAFE_INTEGER + 1 },
+    ];
     expect(isCartArray(unsafeQuantity)).toBe(false);
   });
 
