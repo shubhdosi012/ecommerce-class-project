@@ -6,31 +6,38 @@ export type CartLine = {
 };
 
 export function isProductArray(value: unknown): value is Product[] {
-  return (
-    Array.isArray(value) &&
-    value.every((entry: unknown) => {
-      if (typeof entry !== "object" || entry === null || Array.isArray(entry)) return false;
-      const item = entry as Record<string, unknown>;
+  if (!Array.isArray(value)) return false;
 
-      return (
-        typeof item.id === "string" &&
-        item.id.trim().length > 0 &&
-        typeof item.name === "string" &&
-        item.name.trim().length > 0 &&
-        typeof item.category === "string" &&
-        CATEGORIES.includes(item.category) &&
-        typeof item.price === "number" &&
-        Number.isFinite(item.price) &&
-        item.price > 0 &&
-        typeof item.stock === "number" &&
-        Number.isInteger(item.stock) &&
-        item.stock >= 0 &&
-        typeof item.tagline === "string" &&
-        typeof item.description === "string" &&
-        typeof item.image === "string"
-      );
-    })
-  );
+  const ids = new Set<string>();
+  for (const entry of value) {
+    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) return false;
+    const item = entry as Record<string, unknown>;
+
+    if (
+      typeof item.id !== "string" ||
+      item.id.trim().length === 0 ||
+      ids.has(item.id) ||
+      typeof item.name !== "string" ||
+      item.name.trim().length === 0 ||
+      typeof item.category !== "string" ||
+      !CATEGORIES.includes(item.category) ||
+      typeof item.price !== "number" ||
+      !Number.isFinite(item.price) ||
+      item.price <= 0 ||
+      typeof item.stock !== "number" ||
+      !Number.isSafeInteger(item.stock) ||
+      item.stock < 0 ||
+      typeof item.tagline !== "string" ||
+      typeof item.description !== "string" ||
+      typeof item.image !== "string"
+    ) {
+      return false;
+    }
+
+    ids.add(item.id);
+  }
+
+  return true;
 }
 
 export function isCartArray(value: unknown): value is CartLine[] {
@@ -43,7 +50,7 @@ export function isCartArray(value: unknown): value is CartLine[] {
         typeof item.id === "string" &&
         item.id.trim().length > 0 &&
         typeof item.qty === "number" &&
-        Number.isInteger(item.qty) &&
+        Number.isSafeInteger(item.qty) &&
         item.qty > 0
       );
     })
@@ -60,7 +67,7 @@ export function normalizeCart(lines: CartLine[], products: Product[]): CartLine[
 
   for (const line of lines) {
     const product = productsById.get(line.id);
-    if (!product || product.stock <= 0 || !Number.isInteger(line.qty) || line.qty <= 0) continue;
+    if (!product || product.stock <= 0 || !Number.isSafeInteger(line.qty) || line.qty <= 0) continue;
 
     const previousQuantity = quantitiesById.get(line.id) ?? 0;
     quantitiesById.set(line.id, Math.min(product.stock, previousQuantity + line.qty));
