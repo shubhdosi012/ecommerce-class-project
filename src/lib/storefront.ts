@@ -6,38 +6,32 @@ export type CartLine = {
 };
 
 export function isProductArray(value: unknown): value is Product[] {
-  if (!Array.isArray(value)) return false;
+  return (
+    Array.isArray(value) &&
+    value.every((entry: unknown) => {
+      if (typeof entry !== "object" || entry === null || Array.isArray(entry)) return false;
+      const item = entry as Record<string, unknown>;
 
-  const ids = new Set<string>();
-  for (const entry of value) {
-    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) return false;
-    const item = entry as Record<string, unknown>;
-
-    if (
-      typeof item.id !== "string" ||
-      item.id.trim().length === 0 ||
-      ids.has(item.id) ||
-      typeof item.name !== "string" ||
-      item.name.trim().length === 0 ||
-      typeof item.category !== "string" ||
-      !CATEGORIES.includes(item.category) ||
-      typeof item.price !== "number" ||
-      !Number.isFinite(item.price) ||
-      item.price <= 0 ||
-      typeof item.stock !== "number" ||
-      !Number.isSafeInteger(item.stock) ||
-      item.stock < 0 ||
-      typeof item.tagline !== "string" ||
-      typeof item.description !== "string" ||
-      typeof item.image !== "string"
-    ) {
-      return false;
-    }
-
-    ids.add(item.id);
-  }
-
-  return true;
+      return (
+        typeof item.id === "string" &&
+        item.id.trim().length > 0 &&
+        typeof item.name === "string" &&
+        item.name.trim().length > 0 &&
+        typeof item.category === "string" &&
+        CATEGORIES.includes(item.category) &&
+        typeof item.price === "number" &&
+        Number.isFinite(item.price) &&
+        item.price > 0 &&
+        typeof item.stock === "number" &&
+        Number.isSafeInteger(item.stock) &&
+        item.stock >= 0 &&
+        typeof item.tagline === "string" &&
+        typeof item.description === "string" &&
+        typeof item.image === "string"
+      );
+    }) &&
+    new Set(value.map((entry) => entry.id)).size === value.length
+  );
 }
 
 export function isCartArray(value: unknown): value is CartLine[] {
