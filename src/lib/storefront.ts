@@ -23,14 +23,13 @@ export function isProductArray(value: unknown): value is Product[] {
         Number.isFinite(item.price) &&
         item.price > 0 &&
         typeof item.stock === "number" &&
-        Number.isSafeInteger(item.stock) &&
+        Number.isInteger(item.stock) &&
         item.stock >= 0 &&
         typeof item.tagline === "string" &&
         typeof item.description === "string" &&
         typeof item.image === "string"
       );
-    }) &&
-    new Set(value.map((entry) => entry.id)).size === value.length
+    })
   );
 }
 
@@ -44,7 +43,7 @@ export function isCartArray(value: unknown): value is CartLine[] {
         typeof item.id === "string" &&
         item.id.trim().length > 0 &&
         typeof item.qty === "number" &&
-        Number.isSafeInteger(item.qty) &&
+        Number.isInteger(item.qty) &&
         item.qty > 0
       );
     })
@@ -61,14 +60,7 @@ export function normalizeCart(lines: CartLine[], products: Product[]): CartLine[
 
   for (const line of lines) {
     const product = productsById.get(line.id);
-    if (
-      !product ||
-      product.stock <= 0 ||
-      !Number.isSafeInteger(line.qty) ||
-      line.qty <= 0
-    ) {
-      continue;
-    }
+    if (!product || product.stock <= 0 || !Number.isInteger(line.qty) || line.qty <= 0) continue;
 
     const previousQuantity = quantitiesById.get(line.id) ?? 0;
     quantitiesById.set(line.id, Math.min(product.stock, previousQuantity + line.qty));
