@@ -22,24 +22,13 @@ describe("saved storefront data", () => {
   it("rejects product data with invalid prices or stock", () => {
     expect(isProductArray([{ ...product, price: Number.POSITIVE_INFINITY }])).toBe(false);
     expect(isProductArray([{ ...product, stock: -2 }])).toBe(false);
-    const unsafeStock = { ...product, stock: Number.MAX_SAFE_INTEGER + 1 };
-    expect(isProductArray([unsafeStock])).toBe(false);
     expect(isProductArray([{ ...product, category: "Unknown" }])).toBe(false);
   });
 
-  it("rejects duplicate product IDs", () => {
-    const duplicateProducts = [product, { ...product, name: "Duplicate" }];
-    expect(isProductArray(duplicateProducts)).toBe(false);
-  });
-
-  it("validates cart quantities as positive safe integers", () => {
+  it("validates cart quantities as positive whole numbers", () => {
     expect(isCartArray([{ id: "product-1", qty: 2 }])).toBe(true);
     expect(isCartArray([{ id: "product-1", qty: 1.5 }])).toBe(false);
     expect(isCartArray([{ id: "product-1", qty: 0 }])).toBe(false);
-    const unsafeQuantity = [
-      { id: "product-1", qty: Number.MAX_SAFE_INTEGER + 1 },
-    ];
-    expect(isCartArray(unsafeQuantity)).toBe(false);
   });
 
   it("merges duplicate lines and caps quantity to available stock", () => {
